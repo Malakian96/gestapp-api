@@ -36,20 +36,20 @@ class App {
 
     private routes(): void {
 
-        this.express.get('/api/tasks', (req, res) => {
+        this.express.get('/api/products', (req, res) => {
             this.productController.getProducts().then(data => res.json(data));
         });
         
-        this.express.post('/api/task', (req, res) => {
+        this.express.post('/api/product', (req, res) => {
             console.log(req.body);
-            this.productController.createProduct(req.body.task).then(data => res.json(data));
+            this.productController.createProduct(req.body.product).then(data => res.json(data));
         });
         
-        this.express.put('/api/task', (req, res) => {
-            this.productController.updateProduct(req.body.task).then(data => res.json(data));
+        this.express.put('/api/product', (req, res) => {
+            this.productController.updateProduct(req.body.product).then(data => res.json(data));
         });
         
-        this.express.delete('/api/task/:id', (req, res) => {
+        this.express.delete('/api/product/:id', (req, res) => {
             this.productController.deleteProduct(req.params.id).then(data => res.json(data));
         });
 

@@ -1,12 +1,12 @@
 import { connect } from "../config/db.config";
 import { APILogger } from '../logger/api.logger';
-import { Product } from "../models/product.model";
+import { List } from "../models/list.model";
 
-export class ProductRepository {
+export class ListRepository {
 
     private logger: APILogger;
     private db: any = {};
-    private productRespository: any;
+    private ListRespository: any;
 
     constructor() {
         this.db = connect();
@@ -14,39 +14,39 @@ export class ProductRepository {
         // this.db.sequelize.sync({ force: true }).then(() => {
         //     console.log("Drop and re-sync db.");
         // });
-        this.productRespository = this.db.sequelize.getRepository(Product);
+        this.ListRespository = this.db.sequelize.getRepository(List);
     }
 
-    async getProducts() {
+    async getLists() {
         
         try {
-            const tasks = await this.productRespository.findAll();
-            console.log('tasks:::', tasks);
-            return tasks;
+            const lists = await this.ListRespository.findAll();
+            console.log('lists:::', lists);
+            return lists;
         } catch (err) {
             console.log(err);
             return [];
         }
     }
 
-    async createProduct(task) {
+    async createList(list) {
         let data = {};
         try {
-            task.createdate = new Date().toISOString();
-            data = await this.productRespository.create(task);
+            list.createdate = new Date().toISOString();
+            data = await this.ListRespository.create(list);
         } catch(err) {
             this.logger.error('Error::' + err);
         }
         return data;
     }
 
-    async updateProduct(task) {
+    async updateList(list) {
         let data = {};
         try {
-            task.updateddate = new Date().toISOString();
-            data = await this.productRespository.update({...task}, {
+            list.updateddate = new Date().toISOString();
+            data = await this.ListRespository.update({...list}, {
                 where: {
-                    id: task.id
+                    id: list.id
                 }
             });
         } catch(err) {
@@ -55,12 +55,12 @@ export class ProductRepository {
         return data;
     }
 
-    async deleteProduct(taskId) {
+    async deleteList(listId) {
         let data = {};
         try {
-            data = await this.productRespository.destroy({
+            data = await this.ListRespository.destroy({
                 where: {
-                    id: taskId
+                    id: listId
                 }
             });
         } catch(err) {

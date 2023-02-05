@@ -192,7 +192,7 @@
                 }
             }
         },
-        "Task": {
+        "Product": {
             "type": "object",
             "properties": {
                 "product": {

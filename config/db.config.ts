@@ -1,5 +1,7 @@
 import { Sequelize } from 'sequelize-typescript'
-import { Product } from '../model/product.model';
+import { List } from '../models/list.model';
+import { ProductList } from '../models/productlists.model';
+import { Product } from '../models/product.model';
 
 export const connect = () => {
 
@@ -26,7 +28,9 @@ export const connect = () => {
         }
     });
 
+    sequelize.addModels([ProductList]);
     sequelize.addModels([Product]);
+    sequelize.addModels([List]);
 
     const db: any = {};
     db.Sequelize = Sequelize;
