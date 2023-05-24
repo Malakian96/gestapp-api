@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node index.ts",
-    "dev": "nodemon",
+    "dev": "start http://localhost:8181/api/docs && nodemon",
     "test": "echo \"Error: no test specified\" && exit 1",
     "db:reset": "npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all"
   },

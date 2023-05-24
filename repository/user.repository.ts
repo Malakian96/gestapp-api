@@ -9,6 +9,7 @@ export class UserRepository {
     private UserRespository: any;
 
     constructor() {
+        console.log('new instance');
         this.db = connect();
         // For Development
         // this.db.sequelize.sync({ force: true }).then(() => {
@@ -17,7 +18,7 @@ export class UserRepository {
         this.UserRespository = this.db.sequelize.getRepository(User);
     }
 
-    async getUsers() {
+    async findAll():Promise<User[]> {
         
         try {
             const users = await this.UserRespository.findAll();
@@ -26,6 +27,18 @@ export class UserRepository {
         } catch (err) {
             console.log(err);
             return [];
+        }
+    }
+
+    async findById(id: string):Promise<User> {
+        
+        try {
+            const users = await this.UserRespository.findByPk(id);
+            console.log('users:::', users);
+            return users;
+        } catch (err) {
+            console.log(err);
+            return null;
         }
     }
 

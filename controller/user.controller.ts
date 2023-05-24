@@ -1,4 +1,5 @@
 import { APILogger } from '../logger/api.logger';
+import { User } from '../models/user';
 import { UserService } from '../service/user.service';
 
 export class UserController {
@@ -11,9 +12,14 @@ export class UserController {
         this.logger = new APILogger();
     }
 
-    async getUsers() {
-        this.logger.info('Controller: getUsers', null);
-        return await this.userService.getUsers();
+    async findAll():Promise<User[]> {
+        this.logger.info('Controller: findAll', null);
+        return await this.userService.findAll();
+    }
+
+    async findById(id: string):Promise<User> {
+        this.logger.info('Controller: findById', null);
+        return await this.userService.findById(id);
     }
 
 }
