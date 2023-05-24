@@ -65,14 +65,8 @@ class App {
     this.express.use('/api', routes);
     this.express.use('/api/docs', swaggerUi.serve, swaggerUi.setup(this.swaggerSpec));
 
-
-    // this.express.get('/api/products', (req, res) => {
-    //     this.userController.getUsers().then(data => res.json(data));
-    // });
-
-
     // handle undefined routes
-    this.express.use('*', (req, res, next) => {
+    this.express.use('*', (_, res) => {
         res.send('Make sure url is correct!!!');
     });
   }
