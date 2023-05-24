@@ -1,4 +1,5 @@
-require("dotenv").config();
+/* eslint-disable @typescript-eslint/no-var-requires */
+require('dotenv').config();
 
 module.exports = {
   development: {
@@ -9,17 +10,17 @@ module.exports = {
     dialect: process.env.DIALECT,
   },
   test: {
-    username: "postgres",
-    password: "root",
-    database: "test",
-    host: "127.0.0.1",
-    dialect: "postgres",
+    username: 'postgres',
+    password: 'root',
+    database: 'gestapp',
+    host: '127.0.0.1',
+    dialect: 'postgres',
   },
   production: {
-    username: "root",
+    username: 'root',
     password: null,
-    database: "database_production",
-    host: "127.0.0.1",
-    dialect: "mysql",
+    database: 'database_production',
+    host: '127.0.0.1',
+    dialect: 'mysql',
   },
 };

@@ -1,41 +1,35 @@
-import { Sequelize } from 'sequelize-typescript'
-import { List } from '../models/list.model';
-import { ProductList } from '../models/productlists.model';
-import { Product } from '../models/product.model';
+import { Sequelize } from 'sequelize-typescript';
+import { User } from '../models/user';
 
 export const connect = () => {
 
-    const hostName = process.env.HOST;
-    const userName = process.env.USER;
-    const password = process.env.PASSWORD;
-    const database = process.env.DB;
-    const dialect: any = process.env.DIALECT;
+	const hostName = process.env.HOST;
+	const userName = process.env.USER;
+	const password = process.env.PASSWORD;
+	const database = process.env.DB;
+	const dialect: any = process.env.DIALECT;
 
-    console.log('dialect  ', dialect)
+	console.log('dialect  ', dialect);
 
-    const operatorsAliases: any = false;
+	const sequelize = new Sequelize(database, userName, password, {
+		host: hostName,
+		dialect,
+		// operatorsAliases,
+		repositoryMode: true,
+		pool: {
+			max: 10,
+			min: 0,
+			acquire: 20000,
+			idle: 5000
+		}
+	});
 
-    const sequelize = new Sequelize(database, userName, password, {
-        host: hostName,
-        dialect,
-        operatorsAliases,
-        repositoryMode: true,
-        pool: {
-            max: 10,
-            min: 0,
-            acquire: 20000,
-            idle: 5000
-        }
-    });
+	sequelize.addModels([User]);
 
-    sequelize.addModels([ProductList]);
-    sequelize.addModels([Product]);
-    sequelize.addModels([List]);
-
-    const db: any = {};
-    db.Sequelize = Sequelize;
-    db.sequelize = sequelize;
+	const db: any = {};
+	db.Sequelize = Sequelize;
+	db.sequelize = sequelize;
     
-    return db;
+	return db;
 
-}
+};

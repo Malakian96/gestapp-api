@@ -1,67 +1,81 @@
-import * as bodyParser from "body-parser";
-import * as express from "express";
-import { APILogger } from "./logger/api.logger";
-import { ProductController } from "./controller/product.controller";
+import * as bodyParser from 'body-parser';
+import * as express from 'express';
+import { APILogger } from './logger/api.logger';
+import { UserController } from './controller/user.controller';
 import * as swaggerUi from 'swagger-ui-express';
-import * as fs from 'fs';
-import 'dotenv/config'
+import 'dotenv/config';
+import 'swagger-jsdoc';
+import * as swaggerJSDoc from 'swagger-jsdoc';
+import { routes } from './routes/index';
 
 class App {
 
-    public express: express.Application;
-    public logger: APILogger;
-    public productController: ProductController;
+  public express: express.Application;
+  public logger: APILogger;
+  public userController: UserController;
 
-    /* Swagger files start */
-    private swaggerFile: any = (process.cwd()+"/swagger/swagger.json");
-    private swaggerData: any = fs.readFileSync(this.swaggerFile, 'utf8');
-    private customCss: any = fs.readFileSync((process.cwd()+"/swagger/swagger.css"), 'utf8');
-    private swaggerDocument = JSON.parse(this.swaggerData);
-    /* Swagger files end */
+  /* Swagger files start */
+  private swaggerDefinition = {
+    openapi: '3.0.0',
+    info: {
+      title: 'Express API for JSONPlaceholder',
+      version: '1.0.0',
+      description:
+        'This is a REST API application made with Express. It retrieves data from JSONPlaceholder.',
+      license: {
+        name: 'Licensed Under MIT',
+        url: 'https://spdx.org/licenses/MIT.html',
+      },
+      contact: {
+        name: 'JSONPlaceholder',
+        url: 'https://jsonplaceholder.typicode.com',
+      },
+    },
+    servers: [
+      {
+        url: 'http://localhost:3000',
+        description: 'Development server',
+      },
+    ],
+  };
+  private options = {
+    swaggerDefinition: this.swaggerDefinition,
+    // Paths to files containing OpenAPI definitions
+    apis: ['./routes/*.ts'],
+  };
+  private swaggerSpec = swaggerJSDoc(this.options);
+  /* Swagger files end */
+
+  constructor() {
+    this.express = express();
+    this.middleware();
+    this.routes();
+    this.logger = new APILogger();
+    this.userController = new UserController();
+  }
+
+  // Configure Express middleware.
+  private middleware(): void {
+    this.express.use(bodyParser.json());
+    this.express.use(bodyParser.urlencoded({ extended: false }));
+  }
+
+  private routes(): void {
+
+    this.express.use('/api', routes);
+    this.express.use('/api/docs', swaggerUi.serve, swaggerUi.setup(this.swaggerSpec));
 
 
-    constructor() {
-        this.express = express();
-        this.middleware();
-        this.routes();
-        this.logger = new APILogger();
-        this.productController = new ProductController();
-    }
+    // this.express.get('/api/products', (req, res) => {
+    //     this.userController.getUsers().then(data => res.json(data));
+    // });
 
-    // Configure Express middleware.
-    private middleware(): void {
-        this.express.use(bodyParser.json());
-        this.express.use(bodyParser.urlencoded({ extended: false }));
-    }
 
-    private routes(): void {
-
-        this.express.get('/api/products', (req, res) => {
-            this.productController.getProducts().then(data => res.json(data));
-        });
-        
-        this.express.post('/api/product', (req, res) => {
-            console.log(req.body);
-            this.productController.createProduct(req.body.product).then(data => res.json(data));
-        });
-        
-        this.express.put('/api/product', (req, res) => {
-            this.productController.updateProduct(req.body.product).then(data => res.json(data));
-        });
-        
-        this.express.delete('/api/product/:id', (req, res) => {
-            this.productController.deleteProduct(req.params.id).then(data => res.json(data));
-        });
-
-        // swagger docs
-        this.express.use('/api/docs', swaggerUi.serve,
-            swaggerUi.setup(this.swaggerDocument, null, null, this.customCss));
-
-        // handle undefined routes
-        this.express.use("*", (req, res, next) => {
-            res.send("Make sure url is correct!!!");
-        });
-    }
+    // handle undefined routes
+    this.express.use('*', (req, res, next) => {
+        res.send('Make sure url is correct!!!');
+    });
+  }
 }
 
 export default new App().express;
