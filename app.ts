@@ -4,7 +4,7 @@ import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import * as swaggerUi from 'swagger-ui-express';
 import * as swaggerJSDoc from 'swagger-jsdoc';
-import { APILogger } from './resources/logger/api.logger';
+import { APILogger } from './logger/api.logger';
 import { routes } from './src/routes/index';
 import { options } from './config/swaggerDefinition';
 

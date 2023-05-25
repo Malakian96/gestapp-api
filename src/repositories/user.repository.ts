@@ -1,6 +1,6 @@
 import { Repository, Sequelize } from 'sequelize-typescript';
 import { connect } from '../../config/db.config';
-import { APILogger } from '../../resources/logger/api.logger';
+import { APILogger } from '../../logger/api.logger';
 import { User } from '../models/user';
 
 export class UserRepository {

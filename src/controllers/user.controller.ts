@@ -1,4 +1,4 @@
-import { APILogger } from '../../resources/logger/api.logger';
+import { APILogger } from '../../logger/api.logger';
 import { User } from '../models/user';
 import { IUserService } from '../services/interfaces/Iuser.service';
 

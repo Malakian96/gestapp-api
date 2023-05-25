@@ -1,5 +1,4 @@
 import { Table, Column, Model, ForeignKey, PrimaryKey } from 'sequelize-typescript';
-import { Account } from './account';
 
 /**
  * @swagger
@@ -20,9 +19,9 @@ import { Account } from './account';
  *           type: string
  *           description: The user's surname.
  *           example: Malakian
- *         accountId:
- *           type: integer
- *           description: Account id.
+ *         email:
+ *           type: string
+ *           description: The user's email.
  *           example: Leanne Graham
  *         createdAt:
  *           type: date-time
@@ -45,13 +44,15 @@ export class User extends Model {
 
   @Column
   surname: string;
-
-  @ForeignKey(() => Account)
+  
   @Column
-  accountId: number;
+  email!: string;
+  
+  @Column
+  password!: string;
 
   @Column
-  createdAt: Date;
+  createdAt!: Date;
 
   @Column
   updatedAt: Date;
