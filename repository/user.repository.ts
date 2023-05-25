@@ -1,3 +1,4 @@
+import { Repository, Sequelize } from 'sequelize-typescript';
 import { connect } from '../config/db.config';
 import { APILogger } from '../logger/api.logger';
 import { User } from '../models/user';
@@ -5,23 +6,22 @@ import { User } from '../models/user';
 export class UserRepository {
 
     private logger: APILogger;
-    private db: any = {};
-    private UserRespository: any;
+    private db: Sequelize = {} as Sequelize;
+    private userRespository: Repository<User>;
 
     constructor() {
-        console.log('new instance');
         this.db = connect();
         // For Development
         // this.db.sequelize.sync({ force: true }).then(() => {
         //     console.log("Drop and re-sync db.");
         // });
-        this.UserRespository = this.db.sequelize.getRepository(User);
+        this.userRespository = this.db.getRepository(User);
     }
 
     async findAll():Promise<User[]> {
         
         try {
-            const users = await this.UserRespository.findAll();
+            const users = await this.userRespository.findAll();
             console.log('users:::', users);
             return users;
         } catch (err) {
@@ -33,7 +33,7 @@ export class UserRepository {
     async findById(id: string):Promise<User> {
         
         try {
-            const users = await this.UserRespository.findByPk(id);
+            const users = await this.userRespository.findByPk(id);
             console.log('users:::', users);
             return users;
         } catch (err) {

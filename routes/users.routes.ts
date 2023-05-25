@@ -2,6 +2,7 @@ import * as express from 'express';
 import { Request, Response } from 'express';
 
 import { UserController } from '../controller/user.controller';
+import { User } from '../models/user';
 export const userRoutes = express.Router();
 
 const userController = new UserController();
@@ -20,7 +21,7 @@ const userController = new UserController();
  *             schema:
  *               type: array
  */
-userRoutes.get('/', async (_, res) => {
+userRoutes.get('/', async (_: Request, res: Response<User[]>) => {
     res.send(await userController.findAll());
 });
 
