@@ -1,6 +1,6 @@
 import * as http from 'http';
 import App from './app';
-import { APILogger } from './logger/api.logger';
+import { APILogger } from './resources/logger/api.logger';
 
 
 const logger = new APILogger();

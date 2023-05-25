@@ -1,7 +1,8 @@
-import { User } from '../models/user';
-import { UserRepository } from '../repository/user.repository';
+import { User } from '../../models/user';
+import { UserRepository } from '../../repositories/user.repository';
+import { IUserService } from '../interfaces/Iuser.service';
 
-export class UserService {
+export class UserService implements IUserService {
 
     private userRepository: UserRepository;
     constructor() {

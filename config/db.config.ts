@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize-typescript';
-import { User } from '../models/user';
+import { User } from '../src/models/user';
 import { Dialect } from 'sequelize';
 
 export const connect = (): Sequelize => {
