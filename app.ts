@@ -1,12 +1,14 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import 'dotenv/config';
 import 'swagger-jsdoc';
-import * as bodyParser from 'body-parser';
+const bodyParser = require('body-parser');
 import * as express from 'express';
 import * as swaggerUi from 'swagger-ui-express';
 import * as swaggerJSDoc from 'swagger-jsdoc';
 import { APILogger } from './logger/api.logger';
 import { routes } from './src/routes/index';
 import { options } from './config/swaggerDefinition';
+
 
 class App {
 
@@ -22,8 +24,9 @@ class App {
 
   // Configure Express middleware.
   private middleware(): void {
+    this.express.use(express.json());
     this.express.use(bodyParser.json());
-    this.express.use(bodyParser.urlencoded({ extended: false }));
+    this.express.use(bodyParser.urlencoded({ extended: true }));
   }
 
   private routes(): void {

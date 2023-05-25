@@ -10,9 +10,14 @@ const userController = new UserController(
 );
 
 userRoutes.get('/users', async (_: Request, res: Response<User[]>) => {
-        res.send(await userController.findAll());
+    res.send(await userController.findAll());
 });
 
 userRoutes.get('/users/:id', async ({ params }: Request, res: Response) => {
     res.send(await userController.findById(params.id));
+});
+
+
+userRoutes.post('/users/register', async (req: Request, res: Response) => {
+    res.send(await userController.register(req.body));
 });

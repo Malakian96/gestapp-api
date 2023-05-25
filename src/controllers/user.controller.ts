@@ -64,4 +64,32 @@ export class UserController {
         return await this.userService.findById(id);
     }
 
+    /**
+     * @swagger
+     * /users/register:
+     *   post:
+     *     summary: Register a user
+     *     description: Register a user found by id
+     *     tags:
+     *       - user
+     *     parameters:
+     *       - in: body
+     *         description: The user to create.
+     *         schema:
+     *           $ref: '#/components/schemas/User'
+     *     responses:
+     *       200:
+     *         description: The user found.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               $ref: '#/components/schemas/User'
+     *       404:
+     *          description: User not found
+    */
+    async register(payload: User) {
+        this.logger.info('Controller: register', null);
+        return await this.userService.register(payload);
+    }
+
 }

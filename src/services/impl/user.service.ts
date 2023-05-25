@@ -9,13 +9,16 @@ export class UserService implements IUserService {
         this.userRepository = new UserRepository();
     }
 
-    async findAll():Promise<User[]> {
+    async findAll(): Promise<User[]> {
         return await this.userRepository.findAll();
     }
 
-    async findById(id: string):Promise<User> {
+    async findById(id: string): Promise<User> {
         return await this.userRepository.findById(id);
     }
-    
 
+    async register(payload: User): Promise<string> {
+        return await this.userRepository.register(payload);
+    }
 }
+

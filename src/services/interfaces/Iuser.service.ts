@@ -4,4 +4,6 @@ export interface IUserService {
     findAll():Promise<User[]>;
 
     findById(id: string):Promise<User>;
+    
+    register(payload: User):Promise<string>;
 }

@@ -1,4 +1,4 @@
-import { Table, Column, Model, ForeignKey, PrimaryKey } from 'sequelize-typescript';
+import { Table, Column, Model, ForeignKey, PrimaryKey, AutoIncrement } from 'sequelize-typescript';
 
 /**
  * @swagger
@@ -23,6 +23,10 @@ import { Table, Column, Model, ForeignKey, PrimaryKey } from 'sequelize-typescri
  *           type: string
  *           description: The user's email.
  *           example: Leanne Graham
+ *         password:
+ *           type: string
+ *           description: The user's password.
+ *           example: wiwi1234
  *         createdAt:
  *           type: date-time
  *           description: The user's creation date.
@@ -36,6 +40,7 @@ import { Table, Column, Model, ForeignKey, PrimaryKey } from 'sequelize-typescri
 export class User extends Model {
   
   @PrimaryKey
+  @AutoIncrement
   @Column
   id: number;
 
