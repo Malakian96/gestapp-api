@@ -33,7 +33,7 @@ class App {
 
     // handle undefined routes
     this.express.use('*', (_, res) => {
-        res.send('Make sure url is correct!!!');
+      res.send('Make sure url is correct!!!');
     });
   }
 }

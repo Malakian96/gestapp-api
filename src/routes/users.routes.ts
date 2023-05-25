@@ -9,46 +9,10 @@ const userController = new UserController(
     new UserService()
 );
 
-/**
- * @swagger
- * /users:
- *   get:
- *     summary: Retrieve a list of Users
- *     description: Retrieve a list of users from Users.
- *     tags:
- *       - user
- *     responses:
- *       200:
- *         description: A list of users.
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *               $ref: '#/components/schemas/User'
- */
-userRoutes.get('users/', async (_: Request, res: Response<User[]>) => {
-    res.send(await userController.findAll());
+userRoutes.get('/users', async (_: Request, res: Response<User[]>) => {
+        res.send(await userController.findAll());
 });
 
-/**
- * @swagger
- * /users/{id}:
- *   get:
- *     summary: Retrieve a user
- *     description: Retrieve a user found by id
- *     tags:
- *       - user
- *     responses:
- *       200:
- *         description: The user found.
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/User'
- *       404:
- *          description: User not found
-*/
-userRoutes.get('users/:id', async ({params}: Request, res: Response) => {
+userRoutes.get('/users/:id', async ({ params }: Request, res: Response) => {
     res.send(await userController.findById(params.id));
 });

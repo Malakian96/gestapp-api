@@ -30,12 +30,12 @@ export class UserRepository {
         }
     }
 
-    async findById(id: string):Promise<User> {
+    async findById(id: string):Promise<User | null> {
         
         try {
-            const users = await this.userRespository.findByPk(id);
-            console.log('users:::', users);
-            return users;
+            const user = await this.userRespository.findByPk(id);
+            console.log('user:::', user);
+            return user;
         } catch (err) {
             console.log(err);
             return null;
