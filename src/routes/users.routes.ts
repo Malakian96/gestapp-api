@@ -15,6 +15,8 @@ const userController = new UserController(
  *   get:
  *     summary: Retrieve a list of Users
  *     description: Retrieve a list of users from Users.
+ *     tags:
+ *       - user
  *     responses:
  *       200:
  *         description: A list of users.
@@ -29,14 +31,14 @@ userRoutes.get('users/', async (_: Request, res: Response<User[]>) => {
     res.send(await userController.findAll());
 });
 
-
-
 /**
  * @swagger
  * /users/{id}:
  *   get:
  *     summary: Retrieve a user
  *     description: Retrieve a user found by id
+ *     tags:
+ *       - user
  *     responses:
  *       200:
  *         description: The user found.
