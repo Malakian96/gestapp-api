@@ -96,9 +96,9 @@ export class UserController {
 
     /**
      * @swagger
-     * /users/register:
+     * /users/login:
      *   post:
-     *     summary: Register a user
+     *     summary: Login a user
      *     description: Register a user found by id
      *     tags:
      *       - user
@@ -106,14 +106,15 @@ export class UserController {
      *       - in: body
      *         description: The user to create.
      *         schema:
-     *           $ref: '#/components/schemas/User'
+     *           $ref: '#/components/schemas/UserLogin'
      *     responses:
      *       200:
-     *         description: The user found.
+     *         description: The user token.
      *         content:
      *           application/json:
      *             schema:
-     *               $ref: '#/components/schemas/User'
+     *               type: string
+     *               example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJlbWFpbCI6Imp1ZGl0aHBlcmV6cXVpam9AZ21haWwuY29tIiwiaWF0IjoxNjg1MjAyNjE5LCJleHAiOjE2ODUyMDk4MTl9.Os7eZnLcZl96rqcKPBe6rjZY93OlJWLZDIr9A_0UREQ
      *       404:
      *          description: User not found
     */
