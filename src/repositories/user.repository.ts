@@ -2,6 +2,7 @@ import { Repository, Sequelize } from 'sequelize-typescript';
 import { connect } from '../../config/db.config';
 import { APILogger } from '../../logger/api.logger';
 import { User } from '../models/user';
+import { UserLoginDto } from '../dtos/user/userlogin.dto';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 
@@ -38,6 +39,7 @@ export class UserRepository {
 
         try {
             const user = await this.userRespository.findByPk(id);
+            if(!user) throw Error(`User with id ${id} not found`);
             console.log('user:::', user);
             return user;
         } catch (err) {
@@ -48,21 +50,20 @@ export class UserRepository {
 
     async register(payload: User): Promise<string> {
         try {
-            // TODO: Validation & error control
             // Get user input
             const { name, surname, email, password } = payload;
 
             // Validate user input
             if (!(email && password && name && surname)) {
-                // res.status(400).send("All input is required");
+                throw Error('All input is required');
             }
 
             // check if user already exist
             // Validate if user exist in our database
-            const oldUser = await this.userRespository.findAll({ where: { email: email } });
+            const oldUser = await this.userRespository.findOne({ where: { email: email } });
 
             if (oldUser) {
-                // return res.status(409).send("User Already Exist. Please Login");
+                throw Error('User already exists');
             }
 
             //Encrypt user password
@@ -91,4 +92,43 @@ export class UserRepository {
         // Our register logic ends here
     }
 
+    async login(payload: UserLoginDto): Promise<string> {
+        try {
+            // Get user input
+            const { email, password } = payload;
+            console.log(payload);
+            // Validate user input
+            if (!(email && password)) {
+                throw Error('All input is required');
+            }
+
+            //Encrypt user password
+            const encryptedPassword = await bcrypt.hash(password, 10);
+            payload.password = encryptedPassword;
+
+            console.log(encryptedPassword);
+
+            // check if user already exist
+            // Validate if user exist in our database
+            const loggedUser = await this.userRespository.findOne({ where: { email: email, password: encryptedPassword } });
+
+            if(!loggedUser) throw Error('Email or password incorrect');
+            // Create token
+            const token = jwt.sign(
+                { user_id: loggedUser.id, email },
+                process.env.TOKEN_KEY,
+                {
+                    expiresIn: '2h',
+                }
+            );
+            // save user token
+            // user.token = token;
+
+            // return new user
+            return token;
+        } catch (err) {
+            console.log(err);
+        }
+        // Our register logic ends here
+    }
 }

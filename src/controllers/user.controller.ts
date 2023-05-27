@@ -1,4 +1,6 @@
 import { APILogger } from '../../logger/api.logger';
+import { UserDto } from '../dtos/user/user.dto';
+import { UserLoginDto } from '../dtos/user/userlogin.dto';
 import { User } from '../models/user';
 import { IUserService } from '../services/interfaces/Iuser.service';
 
@@ -30,9 +32,9 @@ export class UserController {
      *               items:
      *               $ref: '#/components/schemas/User'
      */
-    async findAll(): Promise<User[]> {
+    async findAll(): Promise<UserDto[]> {
         this.logger.info('Controller: findAll', null);
-        return await this.userService.findAll();
+        return (await this.userService.findAll());
     }
 
     /**
@@ -90,6 +92,34 @@ export class UserController {
     async register(payload: User) {
         this.logger.info('Controller: register', null);
         return await this.userService.register(payload);
+    }
+
+    /**
+     * @swagger
+     * /users/register:
+     *   post:
+     *     summary: Register a user
+     *     description: Register a user found by id
+     *     tags:
+     *       - user
+     *     parameters:
+     *       - in: body
+     *         description: The user to create.
+     *         schema:
+     *           $ref: '#/components/schemas/User'
+     *     responses:
+     *       200:
+     *         description: The user found.
+     *         content:
+     *           application/json:
+     *             schema:
+     *               $ref: '#/components/schemas/User'
+     *       404:
+     *          description: User not found
+    */
+    async login(payload: UserLoginDto) {
+        this.logger.info('Controller: login', null);
+        return await this.userService.login(payload);
     }
 
 }

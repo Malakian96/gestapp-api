@@ -22,7 +22,7 @@ import { Table, Column, Model, ForeignKey, PrimaryKey, AutoIncrement } from 'seq
  *         email:
  *           type: string
  *           description: The user's email.
- *           example: Leanne Graham
+ *           example: wiwi@gulugulu.com
  *         password:
  *           type: string
  *           description: The user's password.
