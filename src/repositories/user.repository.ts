@@ -104,28 +104,36 @@ export class UserRepository {
 
             //Encrypt user password
             const encryptedPassword = await bcrypt.hash(password, 10);
+            
             payload.password = encryptedPassword;
 
             console.log(encryptedPassword);
 
             // check if user already exist
             // Validate if user exist in our database
-            const loggedUser = await this.userRespository.findOne({ where: { email: email, password: encryptedPassword } });
+            const loggedUser = await this.userRespository.findOne({ where: { email: email } });
 
             if(!loggedUser) throw Error('Email or password incorrect');
-            // Create token
-            const token = jwt.sign(
-                { user_id: loggedUser.id, email },
-                process.env.TOKEN_KEY,
-                {
-                    expiresIn: '2h',
-                }
-            );
-            // save user token
-            // user.token = token;
 
-            // return new user
-            return token;
+            // bcrypt.compare(encryptedPassword, loggedUser.password, (err, res) =>{
+            //     console.log(err, 'error');
+            //     console.log(res, 'git gud');
+            // });
+
+            const match = await bcrypt.compare(password, loggedUser.password);
+            
+            if(match){
+                return jwt.sign(
+                    { user_id: loggedUser.id, email },
+                    process.env.TOKEN_KEY,
+                    {
+                        expiresIn: '2h',
+                    }
+                );
+            }else{
+                throw Error('Email or password incorrect');
+            }
+
         } catch (err) {
             console.log(err);
         }
